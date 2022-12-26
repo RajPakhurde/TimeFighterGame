@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.Menu
 import android.view.MenuItem
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var tvScore: TextView
     private lateinit var tvTimer: TextView
+    private lateinit var tvHeart: TextView
     private lateinit var btnTapMe: Button
 
     private var gameStart = false
@@ -34,9 +37,14 @@ class MainActivity : AppCompatActivity() {
 
         tvScore = findViewById(R.id.tvScore)
         tvTimer = findViewById(R.id.tvTimer)
+        tvHeart = findViewById(R.id.tvheart)
         btnTapMe = findViewById(R.id.btnTapMe)
 
-        btnTapMe.setOnClickListener { incrementScore() }
+        btnTapMe.setOnClickListener { view ->
+            val bounceAnimation = AnimationUtils.loadAnimation(this,R.anim.bounce)
+            tvHeart.startAnimation(bounceAnimation)
+            incrementScore()
+        }
 
         if (savedInstanceState != null) {
             score = savedInstanceState.getInt(SCORE_KEY)
@@ -63,8 +71,18 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.mi_refresh -> {
+                countDownTimer.cancel()
                 btnTapMe.isEnabled = true
                 resetGame()
+            }
+            R.id.mi_info -> {
+                val title = getString(R.string.dialog_title,BuildConfig.VERSION_NAME)
+                val message = getString(R.string.dialog_messege)
+                AlertDialog.Builder(this)
+                    .setTitle(title)
+                    .setMessage(message)
+                    .create()
+                    .show()
             }
         }
         return super.onOptionsItemSelected(item)

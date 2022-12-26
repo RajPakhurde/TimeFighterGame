@@ -6,4 +6,6 @@
     <string name="game_over_message">Time\'s up! Your score was:
 %1$d</string>
     <string name="refresh">Refresh</string>
+    <string name="dialog_title">Time Fighter %1$s</string>
+    <string name="dialog_messege">Develop by Raj Pakhurde</string>
 </resources>
